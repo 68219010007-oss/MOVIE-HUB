@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0b0d">
+    <title>MOVIE HUB | Discover Your Next Movie</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="#" class="logo">MOVIE<span>HUB</span></a>
+
+        <nav class="nav">
+            <a href="#home">หน้าแรก</a>
+            <a href="#movies">ภาพยนตร์</a>
+            <a href="#favorites">รายการโปรด</a>
+        </nav>
+
+        <div class="header-actions">
+            <label class="theme-label" for="themeSelect">THEME</label>
+            <select id="themeSelect" aria-label="เลือกธีมเว็บไซต์">
+                <option value="dark">Dark Red</option>
+                <option value="light">Light</option>
+                <option value="green">Forest</option>
+                <option value="purple">Purple</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">WELCOME TO MOVIE HUB</p>
+                <h1>ค้นพบหนังเรื่องโปรด<br><span>ของคุณได้ที่นี่</span></h1>
+                <p class="hero-description">
+                    สำรวจภาพยนตร์หลากหลายแนว ค้นหาเรื่องที่ใช่
+                    แล้วเพิ่มหนังที่ชอบไว้ในรายการโปรด
+                </p>
+                <a href="#movies" class="primary-btn">สำรวจภาพยนตร์</a>
+            </div>
+
+            <div class="hero-decoration" aria-hidden="true">
+                <div class="hero-circle">MH</div>
+                <span class="hero-tag">MOVIE COLLECTION</span>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-item">
+                <strong id="totalMovies">0</strong>
+                <span>ภาพยนตร์ทั้งหมด</span>
+            </div>
+            <div class="stat-item">
+                <strong id="totalGenres">0</strong>
+                <span>ประเภทภาพยนตร์</span>
+            </div>
+            <div class="stat-item">
+                <strong id="totalFavorites">0</strong>
+                <span>รายการโปรดของคุณ</span>
+            </div>
+        </section>
+
+        <section class="movie-section" id="movies">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">EXPLORE COLLECTION</p>
+                    <h2>ค้นหาภาพยนตร์</h2>
+                    <p>เลือกดูหนังตามประเภทหรือค้นหาชื่อเรื่องที่สนใจ</p>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <span aria-hidden="true">⌕</span>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="ค้นหาชื่อหนังหรือเรื่องย่อ..."
+                        autocomplete="off"
+                    >
+                    <button id="clearSearch" type="button" aria-label="ล้างคำค้นหา">×</button>
+                </div>
+
+                <select id="sortSelect" class="sort-select" aria-label="เรียงลำดับภาพยนตร์">
+                    <option value="default">เรียงตามค่าเริ่มต้น</option>
+                    <option value="az">ชื่อ A - Z</option>
+                    <option value="za">ชื่อ Z - A</option>
+                    <option value="rating">คะแนนสูงสุด</option>
+                    <option value="year">ปีล่าสุด</option>
+                </select>
+            </div>
+
+            <div class="filter-buttons" id="filterButtons">
+                <button class="filter-btn active" data-genre="all">ทั้งหมด</button>
+                <button class="filter-btn" data-genre="action">แอ็กชัน</button>
+                <button class="filter-btn" data-genre="comedy">ตลก</button>
+                <button class="filter-btn" data-genre="romance">โรแมนติก</button>
+                <button class="filter-btn" data-genre="horror">สยองขวัญ</button>
+                <button class="filter-btn" data-genre="sci-fi">ไซไฟ</button>
+                <button class="filter-btn" data-genre="animation">แอนิเมชัน</button>
+                <button class="filter-btn" data-genre="drama">ดราม่า</button>
+            </div>
+
+            <div class="result-heading">
+                <h3 id="resultTitle">ภาพยนตร์ทั้งหมด</h3>
+                <span id="resultCount">0 เรื่อง</span>
+            </div>
+
+            <div class="movie-grid" id="movieGrid"></div>
+
+            <div class="empty-state" id="emptyState" hidden>
+                <div class="empty-icon">⌕</div>
+                <h3>ไม่พบภาพยนตร์</h3>
+                <p>ลองเปลี่ยนคำค้นหาหรือเลือกประเภทอื่น</p>
+                <button class="secondary-btn" id="resetFilters" type="button">
+                    ล้างตัวกรอง
+                </button>
+            </div>
+        </section>
+
+        <section class="favorites-section" id="favorites">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR COLLECTION</p>
+                    <h2>รายการโปรด</h2>
+                    <p>ภาพยนตร์ที่คุณกดบันทึกไว้</p>
+                </div>
+                <button class="text-btn" id="showAllMovies" type="button">
+                    ดูหนังทั้งหมด →
+                </button>
+            </div>
+
+            <div class="movie-grid" id="favoriteGrid"></div>
+
+            <div class="favorite-empty" id="favoriteEmpty">
+                <p>ยังไม่มีภาพยนตร์ในรายการโปรด</p>
+                <span>กดปุ่มหัวใจบนการ์ดหนังเพื่อเพิ่มรายการโปรด</span>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <p class="eyebrow">ABOUT MOVIE HUB</p>
+            <h2>YOUR MOVIE. YOUR MOMENT.</h2>
+            <p>
+                MOVIE HUB คือเว็บไซต์รวบรวมข้อมูลภาพยนตร์
+                ที่ช่วยให้คุณค้นหา เลือกดูรายละเอียด
+                และจัดเก็บภาพยนตร์เรื่องโปรดได้ง่าย ๆ
+            </p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <a href="#" class="logo">MOVIE<span>HUB</span></a>
+        <p>DISCOVER YOUR NEXT MOVIE</p>
+        <small>© 2026 MOVIE HUB. Created for learning.</small>
+    </footer>
+
+    <!-- Movie detail modal -->
+    <div class="modal" id="movieModal" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal></div>
+
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" id="closeModal" type="button" aria-label="ปิด">×</button>
+
+            <div class="modal-poster" id="modalPoster">
+                <span id="modalPosterText">MOVIE</span>
+            </div>
+
+            <div class="modal-info">
+                <p class="eyebrow" id="modalGenre">MOVIE DETAILS</p>
+                <h2 id="modalTitle">ชื่อภาพยนตร์</h2>
+
+                <div class="modal-meta">
+                    <span id="modalYear"></span>
+                    <span id="modalRating"></span>
+                    <span id="modalDuration"></span>
+                </div>
+
+                <p class="modal-description" id="modalDescription"></p>
+
+                <div class="modal-extra">
+                    <p><strong>ผู้กำกับ:</strong> <span id="modalDirector"></span></p>
+                    <p><strong>ประเภท:</strong> <span id="modalGenres"></span></p>
+                </div>
+
+                <button class="primary-btn" id="modalFavoriteBtn" type="button">
+                    ♡ เพิ่มรายการโปรด
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
