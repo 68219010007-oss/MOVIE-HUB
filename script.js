@@ -1,278 +1,427 @@
+
+"use strict";
+
+/* =========================================
+   MOVIE HUB - DATABASE (100 MOVIES)
+========================================= */
+
+const movies = [
+    ["The Shawshank Redemption",1994,"drama",9.3],
+    ["The Godfather",1972,"drama",9.2],
+    ["The Dark Knight",2008,"action",9.0],
+    ["The Godfather Part II",1974,"drama",9.0],
+    ["12 Angry Men",1957,"drama",9.0],
+    ["The Lord of the Rings: The Return of the King",2003,"fantasy",9.0],
+    ["Schindler's List",1993,"drama",9.0],
+    ["Pulp Fiction",1994,"drama",8.9],
+    ["The Lord of the Rings: The Fellowship of the Ring",2001,"fantasy",8.9],
+    ["The Good, the Bad and the Ugly",1966,"action",8.8],
+    ["Forrest Gump",1994,"drama",8.8],
+    ["Fight Club",1999,"drama",8.8],
+    ["Inception",2010,"sci-fi",8.8],
+    ["The Lord of the Rings: The Two Towers",2002,"fantasy",8.8],
+    ["Star Wars: The Empire Strikes Back",1980,"sci-fi",8.7],
+    ["The Matrix",1999,"sci-fi",8.7],
+    ["Goodfellas",1990,"drama",8.7],
+    ["One Flew Over the Cuckoo's Nest",1975,"drama",8.7],
+    ["Interstellar",2014,"sci-fi",8.7],
+    ["Seven Samurai",1954,"action",8.6],
+    ["Saving Private Ryan",1998,"action",8.6],
+    ["City of God",2002,"drama",8.6],
+    ["The Green Mile",1999,"drama",8.6],
+    ["Life Is Beautiful",1997,"comedy",8.6],
+    ["Terminator 2: Judgment Day",1991,"action",8.6],
+    ["Spirited Away",2001,"animation",8.6],
+    ["Psycho",1960,"horror",8.5],
+    ["The Pianist",2002,"drama",8.5],
+    ["Parasite",2019,"drama",8.5],
+    ["Gladiator",2000,"action",8.5],
+    ["The Lion King",1994,"animation",8.5],
+    ["Back to the Future",1985,"sci-fi",8.5],
+    ["Whiplash",2014,"drama",8.5],
+    ["The Prestige",2006,"drama",8.5],
+    ["The Departed",2006,"drama",8.5],
+    ["Alien",1979,"horror",8.5],
+    ["Apocalypse Now",1979,"drama",8.4],
+    ["Memento",2000,"drama",8.4],
+    ["Django Unchained",2012,"action",8.4],
+    ["WALL-E",2008,"animation",8.4],
+    ["Coco",2017,"animation",8.4],
+    ["Joker",2019,"drama",8.4],
+    ["Avengers: Infinity War",2018,"action",8.4],
+    ["Avengers: Endgame",2019,"action",8.3],
+    ["Toy Story",1995,"animation",8.3],
+    ["Up",2009,"animation",8.3],
+    ["Your Name",2016,"romance",8.4],
+    ["Grave of the Fireflies",1988,"animation",8.5],
+    ["Princess Mononoke",1997,"animation",8.3],
+    ["Howl's Moving Castle",2004,"animation",8.2],
+    ["The Truman Show",1998,"comedy",8.2],
+    ["Eternal Sunshine of the Spotless Mind",2004,"romance",8.3],
+    ["Amélie",2001,"romance",8.3],
+    ["La La Land",2016,"romance",8.0],
+    ["Titanic",1997,"romance",7.9],
+    ["The Notebook",2004,"romance",7.8],
+    ["Pride & Prejudice",2005,"romance",7.8],
+    ["About Time",2013,"romance",7.8],
+    ["Before Sunrise",1995,"romance",8.1],
+    ["10 Things I Hate About You",1999,"romance",7.3],
+    ["The Conjuring",2013,"horror",7.5],
+    ["Get Out",2017,"horror",7.8],
+    ["A Quiet Place",2018,"horror",7.5],
+    ["Hereditary",2018,"horror",7.3],
+    ["The Shining",1980,"horror",8.4],
+    ["It",2017,"horror",7.3],
+    ["The Exorcist",1973,"horror",8.1],
+    ["Train to Busan",2016,"horror",7.6],
+    ["A Nightmare on Elm Street",1984,"horror",7.4],
+    ["Scream",1996,"horror",7.4],
+    ["Home Alone",1990,"comedy",7.7],
+    ["The Grand Budapest Hotel",2014,"comedy",8.1],
+    ["The Intouchables",2011,"comedy",8.5],
+    ["Groundhog Day",1993,"comedy",8.0],
+    ["The Mask",1994,"comedy",6.9],
+    ["Mean Girls",2004,"comedy",7.1],
+    ["Superbad",2007,"comedy",7.6],
+    ["Mr. Bean's Holiday",2007,"comedy",6.4],
+    ["Rush Hour",1998,"comedy",7.0],
+    ["21 Jump Street",2012,"comedy",7.2],
+    ["Mad Max: Fury Road",2015,"action",8.1],
+    ["John Wick",2014,"action",7.4],
+    ["Mission: Impossible - Fallout",2018,"action",7.7],
+    ["Top Gun: Maverick",2022,"action",8.2],
+    ["The Avengers",2012,"action",8.0],
+    ["Iron Man",2008,"action",7.9],
+    ["Spider-Man: No Way Home",2021,"action",8.2],
+    ["Black Panther",2018,"action",7.3],
+    ["The Batman",2022,"action",7.8],
+    ["Jurassic Park",1993,"sci-fi",8.2],
+    ["Blade Runner 2049",2017,"sci-fi",8.0],
+    ["Dune",2021,"sci-fi",8.0],
+    ["Arrival",2016,"sci-fi",7.9],
+    ["The Martian",2015,"sci-fi",8.0],
+    ["Avatar",2009,"sci-fi",7.9],
+    ["Ready Player One",2018,"sci-fi",7.4],
+    ["The Fifth Element",1997,"sci-fi",7.6],
+    ["Edge of Tomorrow",2014,"sci-fi",7.9],
+    ["Everything Everywhere All at Once",2022,"sci-fi",7.8],
+    ["The Terminator",1984,"sci-fi",8.1]
+];
+
+/* =========================================
+   GENRE INFORMATION
+========================================= */
+
+const genreNames = {
+    action: "แอ็กชัน",
+    comedy: "ตลก",
+    romance: "โรแมนติก",
+    horror: "สยองขวัญ",
+    "sci-fi": "ไซไฟ",
+    animation: "แอนิเมชัน",
+    drama: "ดราม่า",
+    fantasy: "แฟนตาซี"
+};
+
+const genreDescriptions = {
+    action: "ภาพยนตร์แนวแอ็กชัน เน้นการผจญภัยและเหตุการณ์ที่ตื่นเต้น",
+    comedy: "ภาพยนตร์แนวตลก เน้นความสนุกสนานและเสียงหัวเราะ",
+    romance: "ภาพยนตร์แนวโรแมนติกเกี่ยวกับความรักและความสัมพันธ์",
+    horror: "ภาพยนตร์แนวสยองขวัญและระทึกขวัญ",
+    "sci-fi": "ภาพยนตร์แนววิทยาศาสตร์และจินตนาการ",
+    animation: "ภาพยนตร์แอนิเมชันที่เล่าเรื่องผ่านงานภาพและตัวละคร",
+    drama: "ภาพยนตร์แนวดราม่าที่เน้นเรื่องราวและอารมณ์",
+    fantasy: "ภาพยนตร์แนวแฟนตาซีที่เต็มไปด้วยจินตนาการ"
+};
+
+/* =========================================
+   HTML ELEMENTS
+========================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    // รายการภาพยนตร์ตัวอย่าง
-    const movies = [
-        {
-            id: 1,
-            title: "Avengers: Endgame",
-            year: 2019,
-            rating: 8.4,
-            duration: "181 นาที",
-            genre: ["action", "sci-fi"],
-            director: "Anthony Russo, Joe Russo",
-            description: "เหล่าอเวนเจอร์สที่เหลืออยู่ต้องร่วมมือกันเพื่อหาทางแก้ไขเหตุการณ์ครั้งใหญ่ และพยายามนำความสมดุลกลับคืนสู่จักรวาล",
-            poster: "AVENGERS",
-            color: "linear-gradient(145deg,#501014,#111827)"
-        },
-        {
-            id: 2,
-            title: "Spider-Man: No Way Home",
-            year: 2021,
-            rating: 8.2,
-            duration: "148 นาที",
-            genre: ["action", "sci-fi"],
-            director: "Jon Watts",
-            description: "ชีวิตของปีเตอร์ ปาร์กเกอร์เปลี่ยนไปเมื่อความลับเรื่องตัวตนถูกเปิดเผย เขาจึงต้องหาทางแก้ไขสถานการณ์ที่เกินควบคุม",
-            poster: "SPIDER-MAN",
-            color: "linear-gradient(145deg,#8d101e,#122b51)"
-        },
-        {
-            id: 3,
-            title: "The Batman",
-            year: 2022,
-            rating: 7.8,
-            duration: "176 นาที",
-            genre: ["action", "drama"],
-            director: "Matt Reeves",
-            description: "แบทแมนออกสืบสวนคดีปริศนาในเมืองก็อตแธม และค้นพบความลับที่เชื่อมโยงกับผู้มีอำนาจในเมือง",
-            poster: "THE BATMAN",
-            color: "linear-gradient(145deg,#242424,#751c20)"
-        },
-        {
-            id: 4,
-            title: "Joker",
-            year: 2019,
-            rating: 8.4,
-            duration: "122 นาที",
-            genre: ["drama", "thriller"],
-            director: "Todd Phillips",
-            description: "เรื่องราวของชายคนหนึ่งที่ต้องเผชิญกับปัญหาในชีวิตและสังคม จนนำไปสู่การเปลี่ยนแปลงครั้งสำคัญ",
-            poster: "JOKER",
-            color: "linear-gradient(145deg,#285b3a,#161616)"
-        },
-        {
-            id: 5,
-            title: "Interstellar",
-            year: 2014,
-            rating: 8.7,
-            duration: "169 นาที",
-            genre: ["sci-fi", "drama"],
-            director: "Christopher Nolan",
-            description: "กลุ่มนักบินอวกาศออกเดินทางผ่านอวกาศเพื่อค้นหาดาวเคราะห์ที่มนุษย์สามารถอาศัยอยู่ได้",
-            poster: "INTERSTELLAR",
-            color: "linear-gradient(145deg,#173c63,#090b18)"
-        },
-        {
-            id: 6,
-            title: "Inception",
-            year: 2010,
-            rating: 8.8,
-            duration: "148 นาที",
-            genre: ["sci-fi", "action"],
-            director: "Christopher Nolan",
-            description: "ทีมผู้เชี่ยวชาญมีภารกิจเข้าไปในความฝันของเป้าหมายเพื่อทำภารกิจที่ซับซ้อนและท้าทาย",
-            poster: "INCEPTION",
-            color: "linear-gradient(145deg,#75502b,#151515)"
-        },
-        {
-            id: 7,
-            title: "The Conjuring",
-            year: 2013,
-            rating: 7.5,
-            duration: "112 นาที",
-            genre: ["horror"],
-            director: "James Wan",
-            description: "คู่สามีภรรยานักสืบเรื่องเหนือธรรมชาติเข้าไปช่วยครอบครัวหนึ่งที่กำลังเผชิญเหตุการณ์ลึกลับในบ้าน",
-            poster: "THE CONJURING",
-            color: "linear-gradient(145deg,#24243b,#08080d)"
-        },
-        {
-            id: 8,
-            title: "A Quiet Place",
-            year: 2018,
-            rating: 7.5,
-            duration: "90 นาที",
-            genre: ["horror", "sci-fi"],
-            director: "John Krasinski",
-            description: "ครอบครัวหนึ่งต้องใช้ชีวิตอย่างระมัดระวังในโลกที่เสียงเพียงเล็กน้อยอาจนำอันตรายมาสู่พวกเขา",
-            poster: "A QUIET PLACE",
-            color: "linear-gradient(145deg,#34442a,#101510)"
-        },
-        {
-            id: 9,
-            title: "The Hangover",
-            year: 2009,
-            rating: 7.7,
-            duration: "100 นาที",
-            genre: ["comedy"],
-            director: "Todd Phillips",
-            description: "กลุ่มเพื่อนตื่นขึ้นมาหลังคืนที่เต็มไปด้วยเรื่องวุ่นวาย และต้องช่วยกันตามหาสิ่งที่หายไป",
-            poster: "THE HANGOVER",
-            color: "linear-gradient(145deg,#a17b36,#34200d)"
-        },
-        {
-            id: 10,
-            title: "Home Alone",
-            year: 1990,
-            rating: 7.7,
-            duration: "103 นาที",
-            genre: ["comedy"],
-            director: "Chris Columbus",
-            description: "เด็กชายคนหนึ่งถูกทิ้งให้อยู่บ้านตามลำพังในช่วงวันหยุด และต้องรับมือกับโจรสองคนที่พยายามเข้ามาในบ้าน",
-            poster: "HOME ALONE",
-            color: "linear-gradient(145deg,#8e2630,#253e5c)"
-        },
-        {
-            id: 11,
-            title: "The Notebook",
-            year: 2004,
-            rating: 7.8,
-            duration: "123 นาที",
-            genre: ["romance", "drama"],
-            director: "Nick Cassavetes",
-            description: "เรื่องราวความรักของคนสองคนที่ต้องผ่านช่วงเวลาและอุปสรรคมากมายในชีวิต",
-            poster: "THE NOTEBOOK",
-            color: "linear-gradient(145deg,#825b65,#302331)"
-        },
-        {
-            id: 12,
-            title: "La La Land",
-            year: 2016,
-            rating: 8.0,
-            duration: "128 นาที",
-            genre: ["romance", "drama"],
-            director: "Damien Chazelle",
-            description: "นักดนตรีแจ๊สและนักแสดงสาวได้พบกันในลอสแอนเจลิส พร้อมกับความฝันและความสัมพันธ์ที่เติบโตขึ้น",
-            poster: "LA LA LAND",
-            color: "linear-gradient(145deg,#9b633d,#2d2855)"
-        },
-        {
-            id: 13,
-            title: "Your Name",
-            year: 2016,
-            rating: 8.4,
-            duration: "106 นาที",
-            genre: ["animation", "romance"],
-            director: "Makoto Shinkai",
-            description: "วัยรุ่นสองคนที่ไม่เคยพบกันกลับสามารถสลับร่างกันได้อย่างลึกลับ และพยายามตามหากัน",
-            poster: "YOUR NAME",
-            color: "linear-gradient(145deg,#416b9a,#7a426d)"
-        },
-        {
-            id: 14,
-            title: "Inside Out",
-            year: 2015,
-            rating: 8.1,
-            duration: "95 นาที",
-            genre: ["animation", "comedy"],
-            director: "Pete Docter",
-            description: "พาไปรู้จักกับอารมณ์ต่าง ๆ ที่ทำงานอยู่ในจิตใจของเด็กหญิงคนหนึ่ง ขณะที่เธอกำลังปรับตัวกับชีวิตใหม่",
-            poster: "INSIDE OUT",
-            color: "linear-gradient(145deg,#346ca8,#753b8c)"
-        },
-        {
-            id: 15,
-            title: "Coco",
-            year: 2017,
-            rating: 8.4,
-            duration: "105 นาที",
-            genre: ["animation", "drama"],
-            director: "Lee Unkrich",
-            description: "เด็กชายผู้รักเสียงดนตรีเดินทางเข้าสู่โลกแห่งความทรงจำและค้นพบความสำคัญของครอบครัว",
-            poster: "COCO",
-            color: "linear-gradient(145deg,#a94c2c,#38204e)"
-        },
-        {
-            id: 16,
-            title: "The Pursuit of Happyness",
-            year: 2006,
-            rating: 8.0,
-            duration: "117 นาที",
-            genre: ["drama"],
-            director: "Gabriele Muccino",
-            description: "ชายคนหนึ่งพยายามสร้างชีวิตที่ดีขึ้นให้กับตัวเองและลูกชาย แม้ต้องเผชิญกับอุปสรรคมากมาย",
-            poster: "HAPPINESS",
-            color: "linear-gradient(145deg,#566a7d,#1a2633)"
-        }
-    ];
+    const $ = id => document.getElementById(id);
 
-    const genreNames = {
-        action: "แอ็กชัน",
-        comedy: "ตลก",
-        romance: "โรแมนติก",
-        horror: "สยองขวัญ",
-        "sci-fi": "ไซไฟ",
-        animation: "แอนิเมชัน",
-        drama: "ดราม่า",
-        thriller: "ระทึกขวัญ"
-    };
+    const movieGrid = $("movieGrid");
+    const favoriteGrid = $("favoriteGrid");
+    const searchInput = $("searchInput");
+    const sortSelect = $("sortSelect");
+    const clearSearch = $("clearSearch");
 
-    // HTML elements
-    const movieGrid = document.getElementById("movieGrid");
-    const favoriteGrid = document.getElementById("favoriteGrid");
-    const searchInput = document.getElementById("searchInput");
-    const clearSearch = document.getElementById("clearSearch");
-    const sortSelect = document.getElementById("sortSelect");
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const emptyState = document.getElementById("emptyState");
-    const favoriteEmpty = document.getElementById("favoriteEmpty");
-    const resultTitle = document.getElementById("resultTitle");
-    const resultCount = document.getElementById("resultCount");
-    const themeSelect = document.getElementById("themeSelect");
+    const totalMovies = $("totalMovies");
+    const totalGenres = $("totalGenres");
+    const totalFavorites = $("totalFavorites");
 
-    const modal = document.getElementById("movieModal");
-    const closeModalBtn = document.getElementById("closeModal");
-    const modalFavoriteBtn = document.getElementById("modalFavoriteBtn");
+    const resultTitle = $("resultTitle");
+    const resultCount = $("resultCount");
+    const emptyState = $("emptyState");
+    const favoriteEmpty = $("favoriteEmpty");
+
+    const themeSelect = $("themeSelect");
+
+    const modal = $("movieModal");
+    const closeModal = $("closeModal");
+    const modalPoster = $("modalPoster");
+    const modalPosterText = $("modalPosterText");
+    const modalGenre = $("modalGenre");
+    const modalTitle = $("modalTitle");
+    const modalYear = $("modalYear");
+    const modalRating = $("modalRating");
+    const modalDuration = $("modalDuration");
+    const modalDescription = $("modalDescription");
+    const modalDirector = $("modalDirector");
+    const modalGenres = $("modalGenres");
+    const modalFavoriteBtn = $("modalFavoriteBtn");
+
+    /* =====================================
+       MOVIE OBJECTS
+    ===================================== */
+
+    const movieData = movies.map((item, index) => ({
+        id: index + 1,
+        title: item[0],
+        year: item[1],
+        genre: item[2],
+        rating: item[3],
+        description: genreDescriptions[item[2]]
+    }));
 
     let activeGenre = "all";
     let currentMovieId = null;
-    let showFavoritesOnly = false;
 
-    // Read saved data safely
-    function readStorage(key, fallback) {
-        try {
-            const value = localStorage.getItem(key);
-            return value ? JSON.parse(value) : fallback;
-        } catch (error) {
-            return fallback;
-        }
-    }
+    /* =====================================
+       FAVORITES STORAGE
+    ===================================== */
 
-    let favorites = readStorage("movieHubFavorites", []);
+    let favorites = [];
 
-    if (!Array.isArray(favorites)) {
+    try {
+        const saved = JSON.parse(
+            localStorage.getItem("movieHubFavorites") || "[]"
+        );
+
+        favorites = Array.isArray(saved) ? saved : [];
+    } catch (error) {
         favorites = [];
     }
 
-    // Theme
-    const savedTheme = localStorage.getItem("movieHubTheme") || "dark";
-    const allowedThemes = ["dark", "light", "green", "purple"];
-    const initialTheme = allowedThemes.includes(savedTheme) ? savedTheme : "dark";
-
-    document.body.dataset.theme = initialTheme;
-    themeSelect.value = initialTheme;
-
-    themeSelect.addEventListener("change", () => {
-        const theme = themeSelect.value;
-
-        if (!allowedThemes.includes(theme)) return;
-
-        document.body.dataset.theme = theme;
-        localStorage.setItem("movieHubTheme", theme);
-    });
-
-    // Save favorites
     function saveFavorites() {
-        localStorage.setItem("movieHubFavorites", JSON.stringify(favorites));
-        updateStats();
+        try {
+            localStorage.setItem(
+                "movieHubFavorites",
+                JSON.stringify(favorites)
+            );
+        } catch (error) {
+            console.warn("ไม่สามารถบันทึกรายการโปรดได้", error);
+        }
     }
 
-    function isFavorite(id) {
-        return favorites.includes(id);
+    /* =====================================
+       HELPER FUNCTIONS
+    ===================================== */
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
     }
+
+    function getInitials(title) {
+        return title
+            .split(" ")
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(word => word[0])
+            .join("")
+            .toUpperCase();
+    }
+
+    /* =====================================
+       MOVIE CARD
+    ===================================== */
+
+    function createMovieCard(movie) {
+        const isFavorite = favorites.includes(movie.id);
+
+        return `
+            <article class="movie-card">
+
+                <div class="poster-fallback movie-poster">
+                    <span>${escapeHTML(getInitials(movie.title))}</span>
+                </div>
+
+                <div class="movie-info">
+
+                    <h3 class="movie-title">
+                        ${escapeHTML(movie.title)}
+                    </h3>
+
+                    <div class="movie-meta">
+                        <span>${movie.year}</span>
+                        <span class="rating">
+                            ★ ${movie.rating.toFixed(1)}
+                        </span>
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            class="detail-btn"
+                            type="button"
+                            data-detail="${movie.id}">
+                            ดูรายละเอียด
+                        </button>
+
+                        <button
+                            class="favorite-btn ${isFavorite ? "active" : ""}"
+                            type="button"
+                            data-favorite="${movie.id}"
+                            aria-label="เพิ่มหรือลบรายการโปรด">
+                            ${isFavorite ? "♥" : "♡"}
+                        </button>
+
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+
+    /* =====================================
+       RENDER MOVIES
+    ===================================== */
+
+    function renderMovies() {
+
+        if (!movieGrid) return;
+
+        let filtered = [...movieData];
+
+        const keyword = searchInput
+            ? searchInput.value.trim().toLowerCase()
+            : "";
+
+        // ค้นหาชื่อเรื่อง
+        if (keyword) {
+            filtered = filtered.filter(movie =>
+                movie.title.toLowerCase().includes(keyword)
+            );
+        }
+
+        // กรองประเภท
+        if (activeGenre !== "all") {
+            filtered = filtered.filter(movie =>
+                movie.genre === activeGenre
+            );
+        }
+
+        // เรียงลำดับ
+        const sortValue = sortSelect
+            ? sortSelect.value
+            : "default";
+
+        switch (sortValue) {
+            case "az":
+                filtered.sort((a, b) =>
+                    a.title.localeCompare(b.title)
+                );
+                break;
+
+            case "za":
+                filtered.sort((a, b) =>
+                    b.title.localeCompare(a.title)
+                );
+                break;
+
+            case "rating":
+                filtered.sort((a, b) =>
+                    b.rating - a.rating
+                );
+                break;
+
+            case "year":
+                filtered.sort((a, b) =>
+                    b.year - a.year
+                );
+                break;
+        }
+
+        movieGrid.innerHTML = filtered.length
+            ? filtered.map(createMovieCard).join("")
+            : "";
+
+        if (resultTitle) {
+            resultTitle.textContent = activeGenre === "all"
+                ? "ภาพยนตร์ทั้งหมด"
+                : "ภาพยนตร์ประเภท " + genreNames[activeGenre];
+        }
+
+        if (resultCount) {
+            resultCount.textContent = `${filtered.length} เรื่อง`;
+        }
+
+        if (emptyState) {
+            emptyState.hidden = filtered.length !== 0;
+        }
+
+        updateStats();
+        renderFavorites();
+    }
+
+    /* =====================================
+       RENDER FAVORITES
+    ===================================== */
+
+    function renderFavorites() {
+
+        if (!favoriteGrid) return;
+
+        const favoriteMovies = movieData.filter(movie =>
+            favorites.includes(movie.id)
+        );
+
+        favoriteGrid.innerHTML = favoriteMovies.length
+            ? favoriteMovies.map(createMovieCard).join("")
+            : "";
+
+        if (favoriteEmpty) {
+            favoriteEmpty.hidden = favoriteMovies.length !== 0;
+        }
+
+        if (totalFavorites) {
+            totalFavorites.textContent = favoriteMovies.length;
+        }
+    }
+
+    /* =====================================
+       UPDATE STATISTICS
+    ===================================== */
+
+    function updateStats() {
+
+        if (totalMovies) {
+            totalMovies.textContent = movieData.length;
+        }
+
+        if (totalGenres) {
+            totalGenres.textContent = Object.keys(genreNames).length;
+        }
+
+        if (totalFavorites) {
+            totalFavorites.textContent = favorites.length;
+        }
+    }
+
+    /* =====================================
+       TOGGLE FAVORITES
+    ===================================== */
 
     function toggleFavorite(id) {
-        if (isFavorite(id)) {
+
+        if (favorites.includes(id)) {
             favorites = favorites.filter(item => item !== id);
         } else {
             favorites.push(id);
@@ -280,270 +429,320 @@ document.addEventListener("DOMContentLoaded", () => {
 
         saveFavorites();
         renderMovies();
-        renderFavorites();
 
-        if (currentMovieId === id && modal.classList.contains("open")) {
+        // อัปเดตปุ่มในหน้ารายละเอียด
+        if (currentMovieId === id && modal) {
             updateModalFavoriteButton();
         }
     }
 
-    // Create a movie card
-    function createMovieCard(movie) {
-        const card = document.createElement("article");
-        card.className = "movie-card";
+    /* =====================================
+       MOVIE DETAILS
+    ===================================== */
 
-        const genres = movie.genre
-            .map(genre => genreNames[genre] || genre)
-            .join(" / ");
+    function showDetails(id) {
 
-        card.innerHTML = `
-            <div class="poster" style="--poster-bg: ${movie.color}">
-                <span class="poster-year">${movie.year}</span>
-                <span class="rating">★ ${movie.rating.toFixed(1)}</span>
-                <span class="poster-title"></span>
-            </div>
+        const movie = movieData.find(item => item.id === id);
 
-            <div class="movie-card-info">
-                <p class="movie-genre"></p>
-                <h3></h3>
-                <p class="movie-subtitle">${movie.year} · ${movie.duration}</p>
+        if (!movie || !modal) return;
 
-                <div class="card-actions">
-                    <button class="details-btn" type="button" data-action="details">
-                        ดูรายละเอียด
-                    </button>
-                    <button
-                        class="favorite-btn ${isFavorite(movie.id) ? "is-favorite" : ""}"
-                        type="button"
-                        data-action="favorite"
-                        aria-label="เพิ่มหรือนำออกจากรายการโปรด"
-                        aria-pressed="${isFavorite(movie.id)}"
-                    >${isFavorite(movie.id) ? "♥" : "♡"}</button>
-                </div>
-            </div>
-        `;
+        currentMovieId = id;
 
-        card.querySelector(".poster-title").textContent = movie.poster;
-        card.querySelector(".movie-genre").textContent = genres;
-        card.querySelector("h3").textContent = movie.title;
-
-        card.querySelector('[data-action="details"]').addEventListener("click", () => {
-            openModal(movie.id);
-        });
-
-        card.querySelector('[data-action="favorite"]').addEventListener("click", () => {
-            toggleFavorite(movie.id);
-        });
-
-        return card;
-    }
-
-    // Search, filter and sort
-    function getFilteredMovies() {
-        const keyword = searchInput.value.trim().toLowerCase();
-
-        let list = movies.filter(movie => {
-            const matchesGenre =
-                activeGenre === "all" || movie.genre.includes(activeGenre);
-
-            const searchableText = [
-                movie.title,
-                movie.description,
-                movie.director,
-                movie.year.toString(),
-                movie.genre.map(genre => genreNames[genre]).join(" ")
-            ].join(" ").toLowerCase();
-
-            const matchesSearch = searchableText.includes(keyword);
-            const matchesFavorite = !showFavoritesOnly || isFavorite(movie.id);
-
-            return matchesGenre && matchesSearch && matchesFavorite;
-        });
-
-        const sort = sortSelect.value;
-
-        if (sort === "az") {
-            list.sort((a, b) => a.title.localeCompare(b.title));
-        } else if (sort === "za") {
-            list.sort((a, b) => b.title.localeCompare(a.title));
-        } else if (sort === "rating") {
-            list.sort((a, b) => b.rating - a.rating);
-        } else if (sort === "year") {
-            list.sort((a, b) => b.year - a.year);
+        if (modalPosterText) {
+            modalPosterText.textContent = getInitials(movie.title);
         }
 
-        return list;
+        if (modalGenre) {
+            modalGenre.textContent = "MOVIE DETAILS";
+        }
+
+        if (modalTitle) {
+            modalTitle.textContent = movie.title;
+        }
+
+        if (modalYear) {
+            modalYear.textContent = movie.year;
+        }
+
+        if (modalRating) {
+            modalRating.textContent = "★ " + movie.rating.toFixed(1);
+        }
+
+        if (modalDuration) {
+            modalDuration.textContent = "ภาพยนตร์";
+        }
+
+        if (modalDescription) {
+            modalDescription.textContent = movie.description;
+        }
+
+        if (modalDirector) {
+            modalDirector.textContent = "ไม่ได้ระบุในชุดข้อมูล";
+        }
+
+        if (modalGenres) {
+            modalGenres.textContent = genreNames[movie.genre];
+        }
+
+        updateModalFavoriteButton();
+
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
     }
 
-    // Render main movie list
-    function renderMovies() {
-        const list = getFilteredMovies();
+    function updateModalFavoriteButton() {
 
-        movieGrid.innerHTML = "";
+        if (!modalFavoriteBtn || currentMovieId === null) return;
 
-        list.forEach(movie => {
-            movieGrid.appendChild(createMovieCard(movie));
+        const isFavorite = favorites.includes(currentMovieId);
+
+        modalFavoriteBtn.textContent = isFavorite
+            ? "♥ ลบออกจากรายการโปรด"
+            : "♡ เพิ่มรายการโปรด";
+    }
+
+    function hideModal() {
+
+        if (!modal) return;
+
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+        currentMovieId = null;
+    }
+
+    /* =====================================
+       CARD BUTTON EVENTS
+    ===================================== */
+
+    document.addEventListener("click", event => {
+
+        const detailButton = event.target.closest("[data-detail]");
+        const favoriteButton = event.target.closest("[data-favorite]");
+        const closeButton = event.target.closest("[data-close-modal]");
+
+        if (detailButton) {
+            showDetails(Number(detailButton.dataset.detail));
+        }
+
+        if (favoriteButton) {
+            toggleFavorite(Number(favoriteButton.dataset.favorite));
+        }
+
+        if (closeButton) {
+            hideModal();
+        }
+    });
+
+    /* =====================================
+       MODAL BUTTONS
+    ===================================== */
+
+    if (closeModal) {
+        closeModal.addEventListener("click", hideModal);
+    }
+
+    if (modalFavoriteBtn) {
+        modalFavoriteBtn.addEventListener("click", () => {
+            if (currentMovieId !== null) {
+                toggleFavorite(currentMovieId);
+            }
         });
-
-        resultCount.textContent = `${list.length} เรื่อง`;
-        resultTitle.textContent = showFavoritesOnly
-            ? "ภาพยนตร์รายการโปรด"
-            : activeGenre === "all"
-                ? "ภาพยนตร์ทั้งหมด"
-                : genreNames[activeGenre] || "ภาพยนตร์";
-
-        emptyState.hidden = list.length !== 0;
     }
 
-    // Render favorites section
-    function renderFavorites() {
-        const favoriteMovies = movies.filter(movie => isFavorite(movie.id));
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            hideModal();
+        }
+    });
 
-        favoriteGrid.innerHTML = "";
+    /* =====================================
+       GENRE FILTER BUTTONS
+    ===================================== */
 
-        favoriteMovies.forEach(movie => {
-            favoriteGrid.appendChild(createMovieCard(movie));
-        });
+    document.querySelectorAll(".filter-btn").forEach(button => {
 
-        favoriteEmpty.hidden = favoriteMovies.length !== 0;
-    }
-
-    // Statistics
-    function updateStats() {
-        document.getElementById("totalMovies").textContent = movies.length;
-
-        const uniqueGenres = new Set(movies.flatMap(movie => movie.genre));
-        document.getElementById("totalGenres").textContent = uniqueGenres.size;
-
-        document.getElementById("totalFavorites").textContent = favorites.length;
-    }
-
-    // Filter buttons
-    filterButtons.forEach(button => {
         button.addEventListener("click", () => {
-            filterButtons.forEach(item => item.classList.remove("active"));
+
+            document.querySelectorAll(".filter-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
             button.classList.add("active");
 
-            activeGenre = button.dataset.genre;
-            showFavoritesOnly = false;
+            activeGenre = button.dataset.genre || "all";
 
             renderMovies();
         });
     });
 
-    // Search
-    searchInput.addEventListener("input", renderMovies);
+    /* =====================================
+       SEARCH
+    ===================================== */
 
-    clearSearch.addEventListener("click", () => {
-        searchInput.value = "";
-        renderMovies();
-        searchInput.focus();
-    });
-
-    // Sort
-    sortSelect.addEventListener("change", renderMovies);
-
-    // Reset filters
-    document.getElementById("resetFilters").addEventListener("click", () => {
-        activeGenre = "all";
-        showFavoritesOnly = false;
-        searchInput.value = "";
-        sortSelect.value = "default";
-
-        filterButtons.forEach(button => {
-            button.classList.toggle("active", button.dataset.genre === "all");
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            renderMovies();
         });
+    }
 
-        renderMovies();
-    });
+    /* =====================================
+       CLEAR SEARCH
+    ===================================== */
 
-    // Show all movies
-    document.getElementById("showAllMovies").addEventListener("click", () => {
-        activeGenre = "all";
-        showFavoritesOnly = false;
-        searchInput.value = "";
-        sortSelect.value = "default";
+    if (clearSearch) {
+        clearSearch.addEventListener("click", () => {
 
-        filterButtons.forEach(button => {
-            button.classList.toggle("active", button.dataset.genre === "all");
+            if (searchInput) {
+                searchInput.value = "";
+                searchInput.focus();
+            }
+
+            renderMovies();
         });
-
-        renderMovies();
-        document.getElementById("movies").scrollIntoView({ behavior: "smooth" });
-    });
-
-    // Open movie detail
-    function openModal(id) {
-        const movie = movies.find(item => item.id === id);
-        if (!movie) return;
-
-        currentMovieId = id;
-
-        document.getElementById("modalTitle").textContent = movie.title;
-        document.getElementById("modalYear").textContent = movie.year;
-        document.getElementById("modalRating").textContent = `★ ${movie.rating.toFixed(1)}`;
-        document.getElementById("modalDuration").textContent = movie.duration;
-        document.getElementById("modalDescription").textContent = movie.description;
-        document.getElementById("modalDirector").textContent = movie.director;
-
-        document.getElementById("modalGenres").textContent =
-            movie.genre.map(genre => genreNames[genre] || genre).join(", ");
-
-        document.getElementById("modalGenre").textContent =
-            movie.genre.map(genre => genreNames[genre] || genre).join(" / ");
-
-        const modalPoster = document.getElementById("modalPoster");
-        modalPoster.style.background = movie.color;
-        document.getElementById("modalPosterText").textContent = movie.poster;
-
-        updateModalFavoriteButton();
-
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-        closeModalBtn.focus();
     }
 
-    // Modal favorite button
-    function updateModalFavoriteButton() {
-        if (currentMovieId === null) return;
+    /* =====================================
+       SORT
+    ===================================== */
 
-        modalFavoriteBtn.textContent = isFavorite(currentMovieId)
-            ? "♥ นำออกจากรายการโปรด"
-            : "♡ เพิ่มรายการโปรด";
+    if (sortSelect) {
+        sortSelect.addEventListener("change", renderMovies);
     }
 
-    modalFavoriteBtn.addEventListener("click", () => {
-        if (currentMovieId !== null) {
-            toggleFavorite(currentMovieId);
-        }
-    });
+    /* =====================================
+       RESET FILTERS
+    ===================================== */
 
-    // Close modal
-    function closeModal() {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
-        currentMovieId = null;
+    const resetFilters = $("resetFilters");
+
+    if (resetFilters) {
+        resetFilters.addEventListener("click", () => {
+
+            activeGenre = "all";
+
+            if (searchInput) {
+                searchInput.value = "";
+            }
+
+            if (sortSelect) {
+                sortSelect.value = "default";
+            }
+
+            document.querySelectorAll(".filter-btn")
+                .forEach(button => {
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.genre === "all"
+                    );
+                });
+
+            renderMovies();
+        });
     }
 
-    closeModalBtn.addEventListener("click", closeModal);
+    /* =====================================
+       SHOW ALL MOVIES
+    ===================================== */
 
-    modal.addEventListener("click", event => {
-        if (event.target.hasAttribute("data-close-modal")) {
-            closeModal();
+    const showAllMovies = $("showAllMovies");
+
+    if (showAllMovies) {
+        showAllMovies.addEventListener("click", () => {
+
+            activeGenre = "all";
+
+            if (searchInput) {
+                searchInput.value = "";
+            }
+
+            if (sortSelect) {
+                sortSelect.value = "default";
+            }
+
+            document.querySelectorAll(".filter-btn")
+                .forEach(button => {
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.genre === "all"
+                    );
+                });
+
+            renderMovies();
+
+            $("movies")?.scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    }
+
+    /* =====================================
+       THEME SELECTOR
+    ===================================== */
+
+    function applyTheme(theme) {
+
+        const allowedThemes = ["dark", "light", "green", "purple"];
+
+        if (!allowedThemes.includes(theme)) {
+            theme = "dark";
         }
-    });
 
-    document.addEventListener("keydown", event => {
-        if (event.key === "Escape" && modal.classList.contains("open")) {
-            closeModal();
+        document.body.dataset.theme = theme;
+
+        document.body.classList.remove(
+            "theme-dark",
+            "theme-light",
+            "theme-green",
+            "theme-purple"
+        );
+
+        document.body.classList.add("theme-" + theme);
+
+        if (themeSelect) {
+            themeSelect.value = theme;
         }
-    });
+    }
 
-    // Initial render
+    let savedTheme = "dark";
+
+    try {
+        savedTheme = localStorage.getItem("movieHubTheme") || "dark";
+    } catch (error) {
+        savedTheme = "dark";
+    }
+
+    applyTheme(savedTheme);
+
+    if (themeSelect) {
+        themeSelect.addEventListener("change", () => {
+
+            const selectedTheme = themeSelect.value;
+
+            applyTheme(selectedTheme);
+
+            try {
+                localStorage.setItem("movieHubTheme", selectedTheme);
+            } catch (error) {
+                console.warn("ไม่สามารถบันทึกธีมได้", error);
+            }
+        });
+    }
+
+    /* =====================================
+       INITIALIZE
+    ===================================== */
+
     updateStats();
     renderMovies();
-    renderFavorites();
+
+    console.log(
+        "MOVIE HUB พร้อมใช้งาน!",
+        movieData.length,
+        "เรื่อง"
+    );
 
 });
