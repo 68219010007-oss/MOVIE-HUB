@@ -1,158 +1,751 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOVIE HUB | คลังภาพยนตร์</title>
+    <meta name="theme-color" content="#0b0b0d">
+    <title>MOVIE HUB | Discover Your Next Movie</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="header">
-        <div class="container nav">
-            <a href="#" class="logo">MOVIE<span>HUB</span></a>
+        <a href="#" class="logo">MOVIE<span>HUB</span></a>
 
-            <nav>
-                <a href="#home">หน้าแรก</a>
-                <a href="#movies">ภาพยนตร์</a>
-                <a href="#favorites">รายการโปรด</a>
-            </nav>
+        <nav class="nav">
+            <a href="#home">หน้าแรก</a>
+            <a href="#movies">ภาพยนตร์</a>
+            <a href="#favorites">รายการโปรด</a>
+        </nav>
 
-            <button class="theme-btn" id="themeBtn">
-                เปลี่ยนธีม
-            </button>
+        <div class="header-actions">
+            <label class="theme-label" for="themeSelect">THEME</label>
+            <select id="themeSelect" aria-label="เลือกธีมเว็บไซต์">
+                <option value="dark">Dark Red</option>
+                <option value="light">Light</option>
+                <option value="green">Forest</option>
+                <option value="purple">Purple</option>
+            </select>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <p class="hero-tag">YOUR MOVIE COLLECTION</p>
-            <h1>ค้นพบโลกแห่ง<br><span>ภาพยนตร์</span></h1>
-            <p class="hero-description">
-                รวมภาพยนตร์หลากหลายแนวไว้ในที่เดียว
-                เลือกชม ค้นหา และเก็บหนังเรื่องโปรดของคุณ
-            </p>
-            <a href="#movies" class="hero-btn">สำรวจภาพยนตร์</a>
-        </div>
-    </section>
-
-    <!-- MAIN -->
-    <main class="container">
-
-        <!-- STATS -->
-        <section class="stats">
-            <div class="stat-card">
-                <h2 id="totalMovies">100</h2>
-                <p>ภาพยนตร์ทั้งหมด</p>
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">WELCOME TO MOVIE HUB</p>
+                <h1>ค้นพบหนังเรื่องโปรด<br><span>ของคุณได้ที่นี่</span></h1>
+                <p class="hero-description">
+                    สำรวจภาพยนตร์หลากหลายแนว ค้นหาเรื่องที่ใช่
+                    แล้วเพิ่มหนังที่ชอบไว้ในรายการโปรด
+                </p>
+                <a href="#movies" class="primary-btn">สำรวจภาพยนตร์</a>
             </div>
-            <div class="stat-card">
-                <h2 id="favoriteCount">0</h2>
-                <p>รายการโปรด</p>
-            </div>
-            <div class="stat-card">
-                <h2>10+</h2>
-                <p>หมวดหมู่</p>
+
+            <div class="hero-decoration" aria-hidden="true">
+                <div class="hero-circle">MH</div>
+                <span class="hero-tag">MOVIE COLLECTION</span>
             </div>
         </section>
 
-        <!-- MOVIES -->
+        <section class="stats">
+            <div class="stat-item">
+                <strong id="totalMovies">0</strong>
+                <span>ภาพยนตร์ทั้งหมด</span>
+            </div>
+            <div class="stat-item">
+                <strong id="totalGenres">0</strong>
+                <span>ประเภทภาพยนตร์</span>
+            </div>
+            <div class="stat-item">
+                <strong id="totalFavorites">0</strong>
+                <span>รายการโปรดของคุณ</span>
+            </div>
+        </section>
+
         <section class="movie-section" id="movies">
             <div class="section-heading">
                 <div>
-                    <p class="section-label">EXPLORE COLLECTION</p>
-                    <h2>ภาพยนตร์ทั้งหมด</h2>
+                    <p class="eyebrow">EXPLORE COLLECTION</p>
+                    <h2>ค้นหาภาพยนตร์</h2>
+                    <p>เลือกดูหนังตามประเภทหรือค้นหาชื่อเรื่องที่สนใจ</p>
                 </div>
             </div>
 
-            <!-- SEARCH -->
-            <div class="search-area">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="ค้นหาชื่อภาพยนตร์..."
-                >
+            <div class="toolbar">
+                <div class="search-box">
+                    <span aria-hidden="true">⌕</span>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="ค้นหาชื่อหนังหรือเรื่องย่อ..."
+                        autocomplete="off"
+                    >
+                    <button id="clearSearch" type="button" aria-label="ล้างคำค้นหา">×</button>
+                </div>
 
-                <select id="genreFilter">
-                    <option value="all">ทุกประเภท</option>
-                </select>
-
-                <select id="sortFilter">
-                    <option value="popular">เรียงตามคะแนน</option>
-                    <option value="title">เรียงตามชื่อ</option>
-                    <option value="year">เรียงตามปีล่าสุด</option>
+                <select id="sortSelect" class="sort-select" aria-label="เรียงลำดับภาพยนตร์">
+                    <option value="default">เรียงตามค่าเริ่มต้น</option>
+                    <option value="az">ชื่อ A - Z</option>
+                    <option value="za">ชื่อ Z - A</option>
+                    <option value="rating">คะแนนสูงสุด</option>
+                    <option value="year">ปีล่าสุด</option>
                 </select>
             </div>
 
-            <!-- FILTER BUTTONS -->
             <div class="filter-buttons" id="filterButtons">
-                <button class="filter-btn active" data-filter="all">
-                    ทั้งหมด
-                </button>
-                <button class="filter-btn" data-filter="action">
-                    แอ็กชัน
-                </button>
-                <button class="filter-btn" data-filter="comedy">
-                    ตลก
-                </button>
-                <button class="filter-btn" data-filter="romance">
-                    โรแมนติก
-                </button>
-                <button class="filter-btn" data-filter="horror">
-                    สยองขวัญ
-                </button>
-                <button class="filter-btn" data-filter="animation">
-                    แอนิเมชัน
-                </button>
-                <button class="filter-btn" data-filter="sci-fi">
-                    ไซไฟ
-                </button>
-                <button class="filter-btn" data-filter="drama">
-                    ดราม่า
-                </button>
+                <button class="filter-btn active" data-genre="all">ทั้งหมด</button>
+                <button class="filter-btn" data-genre="action">แอ็กชัน</button>
+                <button class="filter-btn" data-genre="comedy">ตลก</button>
+                <button class="filter-btn" data-genre="romance">โรแมนติก</button>
+                <button class="filter-btn" data-genre="horror">สยองขวัญ</button>
+                <button class="filter-btn" data-genre="sci-fi">ไซไฟ</button>
+                <button class="filter-btn" data-genre="animation">แอนิเมชัน</button>
+                <button class="filter-btn" data-genre="drama">ดราม่า</button>
             </div>
 
-            <!-- MOVIE GRID -->
-            <div class="movie-grid" id="movieGrid">
-                <p class="loading">กำลังโหลดภาพยนตร์...</p>
+            <div class="result-heading">
+                <h3 id="resultTitle">ภาพยนตร์ทั้งหมด</h3>
+                <span id="resultCount">0 เรื่อง</span>
             </div>
 
-            <p class="result-count" id="resultCount"></p>
+            <div class="movie-grid" id="movieGrid"></div>
+
+            <div class="empty-state" id="emptyState" hidden>
+                <div class="empty-icon">⌕</div>
+                <h3>ไม่พบภาพยนตร์</h3>
+                <p>ลองเปลี่ยนคำค้นหาหรือเลือกประเภทอื่น</p>
+                <button class="secondary-btn" id="resetFilters" type="button">
+                    ล้างตัวกรอง
+                </button>
+            </div>
         </section>
 
-        <!-- FAVORITES -->
-        <section class="movie-section" id="favorites">
+        <section class="favorites-section" id="favorites">
             <div class="section-heading">
                 <div>
-                    <p class="section-label">YOUR COLLECTION</p>
-                    <h2>รายการโปรดของฉัน</h2>
+                    <p class="eyebrow">YOUR COLLECTION</p>
+                    <h2>รายการโปรด</h2>
+                    <p>ภาพยนตร์ที่คุณกดบันทึกไว้</p>
                 </div>
+                <button class="text-btn" id="showAllMovies" type="button">
+                    ดูหนังทั้งหมด →
+                </button>
             </div>
 
-            <div class="movie-grid" id="favoriteGrid">
-                <p class="empty-message">ยังไม่มีภาพยนตร์ในรายการโปรด</p>
+            <div class="movie-grid" id="favoriteGrid"></div>
+
+            <div class="favorite-empty" id="favoriteEmpty">
+                <p>ยังไม่มีภาพยนตร์ในรายการโปรด</p>
+                <span>กดปุ่มหัวใจบนการ์ดหนังเพื่อเพิ่มรายการโปรด</span>
             </div>
         </section>
 
+        <section class="about-section">
+            <p class="eyebrow">ABOUT MOVIE HUB</p>
+            <h2>YOUR MOVIE. YOUR MOMENT.</h2>
+            <p>
+                MOVIE HUB คือเว็บไซต์รวบรวมข้อมูลภาพยนตร์
+                ที่ช่วยให้คุณค้นหา เลือกดูรายละเอียด
+                และจัดเก็บภาพยนตร์เรื่องโปรดได้ง่าย ๆ
+            </p>
+        </section>
     </main>
 
-    <!-- MOVIE MODAL -->
-    <div class="modal" id="movieModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">×</button>
-            <div id="modalBody"></div>
+    <footer class="footer">
+        <a href="#" class="logo">MOVIE<span>HUB</span></a>
+        <p>DISCOVER YOUR NEXT MOVIE</p>
+        <small>© 2026 MOVIE HUB. Created for learning.</small>
+    </footer>
+
+    <!-- Movie detail modal -->
+    <div class="modal" id="movieModal" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal></div>
+
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" id="closeModal" type="button" aria-label="ปิด">×</button>
+
+            <div class="modal-poster" id="modalPoster">
+                <span id="modalPosterText">MOVIE</span>
+            </div>
+
+            <div class="modal-info">
+                <p class="eyebrow" id="modalGenre">MOVIE DETAILS</p>
+                <h2 id="modalTitle">ชื่อภาพยนตร์</h2>
+
+                <div class="modal-meta">
+                    <span id="modalYear"></span>
+                    <span id="modalRating"></span>
+                    <span id="modalDuration"></span>
+                </div>
+
+                <p class="modal-description" id="modalDescription"></p>
+
+                <div class="modal-extra">
+                    <p><strong>ผู้กำกับ:</strong> <span id="modalDirector"></span></p>
+                    <p><strong>ประเภท:</strong> <span id="modalGenres"></span></p>
+                </div>
+
+                <button class="primary-btn" id="modalFavoriteBtn" type="button">
+                    ♡ เพิ่มรายการโปรด
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <h2>MOVIE<span>HUB</span></h2>
-        <p>เว็บไซต์รวบรวมข้อมูลภาพยนตร์เพื่อการศึกษา</p>
-        <p>© 2026 MOVIE HUB</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
 </html>
+
+
+
+script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // รายการภาพยนตร์ตัวอย่าง
+    const movies = [
+        {
+            id: 1,
+            title: "Avengers: Endgame",
+            year: 2019,
+            rating: 8.4,
+            duration: "181 นาที",
+            genre: ["action", "sci-fi"],
+            director: "Anthony Russo, Joe Russo",
+            description: "เหล่าอเวนเจอร์สที่เหลืออยู่ต้องร่วมมือกันเพื่อหาทางแก้ไขเหตุการณ์ครั้งใหญ่ และพยายามนำความสมดุลกลับคืนสู่จักรวาล",
+            poster: "AVENGERS",
+            color: "linear-gradient(145deg,#501014,#111827)"
+        },
+        {
+            id: 2,
+            title: "Spider-Man: No Way Home",
+            year: 2021,
+            rating: 8.2,
+            duration: "148 นาที",
+            genre: ["action", "sci-fi"],
+            director: "Jon Watts",
+            description: "ชีวิตของปีเตอร์ ปาร์กเกอร์เปลี่ยนไปเมื่อความลับเรื่องตัวตนถูกเปิดเผย เขาจึงต้องหาทางแก้ไขสถานการณ์ที่เกินควบคุม",
+            poster: "SPIDER-MAN",
+            color: "linear-gradient(145deg,#8d101e,#122b51)"
+        },
+        {
+            id: 3,
+            title: "The Batman",
+            year: 2022,
+            rating: 7.8,
+            duration: "176 นาที",
+            genre: ["action", "drama"],
+            director: "Matt Reeves",
+            description: "แบทแมนออกสืบสวนคดีปริศนาในเมืองก็อตแธม และค้นพบความลับที่เชื่อมโยงกับผู้มีอำนาจในเมือง",
+            poster: "THE BATMAN",
+            color: "linear-gradient(145deg,#242424,#751c20)"
+        },
+        {
+            id: 4,
+            title: "Joker",
+            year: 2019,
+            rating: 8.4,
+            duration: "122 นาที",
+            genre: ["drama", "thriller"],
+            director: "Todd Phillips",
+            description: "เรื่องราวของชายคนหนึ่งที่ต้องเผชิญกับปัญหาในชีวิตและสังคม จนนำไปสู่การเปลี่ยนแปลงครั้งสำคัญ",
+            poster: "JOKER",
+            color: "linear-gradient(145deg,#285b3a,#161616)"
+        },
+        {
+            id: 5,
+            title: "Interstellar",
+            year: 2014,
+            rating: 8.7,
+            duration: "169 นาที",
+            genre: ["sci-fi", "drama"],
+            director: "Christopher Nolan",
+            description: "กลุ่มนักบินอวกาศออกเดินทางผ่านอวกาศเพื่อค้นหาดาวเคราะห์ที่มนุษย์สามารถอาศัยอยู่ได้",
+            poster: "INTERSTELLAR",
+            color: "linear-gradient(145deg,#173c63,#090b18)"
+        },
+        {
+            id: 6,
+            title: "Inception",
+            year: 2010,
+            rating: 8.8,
+            duration: "148 นาที",
+            genre: ["sci-fi", "action"],
+            director: "Christopher Nolan",
+            description: "ทีมผู้เชี่ยวชาญมีภารกิจเข้าไปในความฝันของเป้าหมายเพื่อทำภารกิจที่ซับซ้อนและท้าทาย",
+            poster: "INCEPTION",
+            color: "linear-gradient(145deg,#75502b,#151515)"
+        },
+        {
+            id: 7,
+            title: "The Conjuring",
+            year: 2013,
+            rating: 7.5,
+            duration: "112 นาที",
+            genre: ["horror"],
+            director: "James Wan",
+            description: "คู่สามีภรรยานักสืบเรื่องเหนือธรรมชาติเข้าไปช่วยครอบครัวหนึ่งที่กำลังเผชิญเหตุการณ์ลึกลับในบ้าน",
+            poster: "THE CONJURING",
+            color: "linear-gradient(145deg,#24243b,#08080d)"
+        },
+        {
+            id: 8,
+            title: "A Quiet Place",
+            year: 2018,
+            rating: 7.5,
+            duration: "90 นาที",
+            genre: ["horror", "sci-fi"],
+            director: "John Krasinski",
+            description: "ครอบครัวหนึ่งต้องใช้ชีวิตอย่างระมัดระวังในโลกที่เสียงเพียงเล็กน้อยอาจนำอันตรายมาสู่พวกเขา",
+            poster: "A QUIET PLACE",
+            color: "linear-gradient(145deg,#34442a,#101510)"
+        },
+        {
+            id: 9,
+            title: "The Hangover",
+            year: 2009,
+            rating: 7.7,
+            duration: "100 นาที",
+            genre: ["comedy"],
+            director: "Todd Phillips",
+            description: "กลุ่มเพื่อนตื่นขึ้นมาหลังคืนที่เต็มไปด้วยเรื่องวุ่นวาย และต้องช่วยกันตามหาสิ่งที่หายไป",
+            poster: "THE HANGOVER",
+            color: "linear-gradient(145deg,#a17b36,#34200d)"
+        },
+        {
+            id: 10,
+            title: "Home Alone",
+            year: 1990,
+            rating: 7.7,
+            duration: "103 นาที",
+            genre: ["comedy"],
+            director: "Chris Columbus",
+            description: "เด็กชายคนหนึ่งถูกทิ้งให้อยู่บ้านตามลำพังในช่วงวันหยุด และต้องรับมือกับโจรสองคนที่พยายามเข้ามาในบ้าน",
+            poster: "HOME ALONE",
+            color: "linear-gradient(145deg,#8e2630,#253e5c)"
+        },
+        {
+            id: 11,
+            title: "The Notebook",
+            year: 2004,
+            rating: 7.8,
+            duration: "123 นาที",
+            genre: ["romance", "drama"],
+            director: "Nick Cassavetes",
+            description: "เรื่องราวความรักของคนสองคนที่ต้องผ่านช่วงเวลาและอุปสรรคมากมายในชีวิต",
+            poster: "THE NOTEBOOK",
+            color: "linear-gradient(145deg,#825b65,#302331)"
+        },
+        {
+            id: 12,
+            title: "La La Land",
+            year: 2016,
+            rating: 8.0,
+            duration: "128 นาที",
+            genre: ["romance", "drama"],
+            director: "Damien Chazelle",
+            description: "นักดนตรีแจ๊สและนักแสดงสาวได้พบกันในลอสแอนเจลิส พร้อมกับความฝันและความสัมพันธ์ที่เติบโตขึ้น",
+            poster: "LA LA LAND",
+            color: "linear-gradient(145deg,#9b633d,#2d2855)"
+        },
+        {
+            id: 13,
+            title: "Your Name",
+            year: 2016,
+            rating: 8.4,
+            duration: "106 นาที",
+            genre: ["animation", "romance"],
+            director: "Makoto Shinkai",
+            description: "วัยรุ่นสองคนที่ไม่เคยพบกันกลับสามารถสลับร่างกันได้อย่างลึกลับ และพยายามตามหากัน",
+            poster: "YOUR NAME",
+            color: "linear-gradient(145deg,#416b9a,#7a426d)"
+        },
+        {
+            id: 14,
+            title: "Inside Out",
+            year: 2015,
+            rating: 8.1,
+            duration: "95 นาที",
+            genre: ["animation", "comedy"],
+            director: "Pete Docter",
+            description: "พาไปรู้จักกับอารมณ์ต่าง ๆ ที่ทำงานอยู่ในจิตใจของเด็กหญิงคนหนึ่ง ขณะที่เธอกำลังปรับตัวกับชีวิตใหม่",
+            poster: "INSIDE OUT",
+            color: "linear-gradient(145deg,#346ca8,#753b8c)"
+        },
+        {
+            id: 15,
+            title: "Coco",
+            year: 2017,
+            rating: 8.4,
+            duration: "105 นาที",
+            genre: ["animation", "drama"],
+            director: "Lee Unkrich",
+            description: "เด็กชายผู้รักเสียงดนตรีเดินทางเข้าสู่โลกแห่งความทรงจำและค้นพบความสำคัญของครอบครัว",
+            poster: "COCO",
+            color: "linear-gradient(145deg,#a94c2c,#38204e)"
+        },
+        {
+            id: 16,
+            title: "The Pursuit of Happyness",
+            year: 2006,
+            rating: 8.0,
+            duration: "117 นาที",
+            genre: ["drama"],
+            director: "Gabriele Muccino",
+            description: "ชายคนหนึ่งพยายามสร้างชีวิตที่ดีขึ้นให้กับตัวเองและลูกชาย แม้ต้องเผชิญกับอุปสรรคมากมาย",
+            poster: "HAPPINESS",
+            color: "linear-gradient(145deg,#566a7d,#1a2633)"
+        }
+    ];
+
+    const genreNames = {
+        action: "แอ็กชัน",
+        comedy: "ตลก",
+        romance: "โรแมนติก",
+        horror: "สยองขวัญ",
+        "sci-fi": "ไซไฟ",
+        animation: "แอนิเมชัน",
+        drama: "ดราม่า",
+        thriller: "ระทึกขวัญ"
+    };
+
+    // HTML elements
+    const movieGrid = document.getElementById("movieGrid");
+    const favoriteGrid = document.getElementById("favoriteGrid");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearch = document.getElementById("clearSearch");
+    const sortSelect = document.getElementById("sortSelect");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const emptyState = document.getElementById("emptyState");
+    const favoriteEmpty = document.getElementById("favoriteEmpty");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultCount = document.getElementById("resultCount");
+    const themeSelect = document.getElementById("themeSelect");
+
+    const modal = document.getElementById("movieModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const modalFavoriteBtn = document.getElementById("modalFavoriteBtn");
+
+    let activeGenre = "all";
+    let currentMovieId = null;
+    let showFavoritesOnly = false;
+
+    // Read saved data safely
+    function readStorage(key, fallback) {
+        try {
+            const value = localStorage.getItem(key);
+            return value ? JSON.parse(value) : fallback;
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    let favorites = readStorage("movieHubFavorites", []);
+
+    if (!Array.isArray(favorites)) {
+        favorites = [];
+    }
+
+    // Theme
+    const savedTheme = localStorage.getItem("movieHubTheme") || "dark";
+    const allowedThemes = ["dark", "light", "green", "purple"];
+    const initialTheme = allowedThemes.includes(savedTheme) ? savedTheme : "dark";
+
+    document.body.dataset.theme = initialTheme;
+    themeSelect.value = initialTheme;
+
+    themeSelect.addEventListener("change", () => {
+        const theme = themeSelect.value;
+
+        if (!allowedThemes.includes(theme)) return;
+
+        document.body.dataset.theme = theme;
+        localStorage.setItem("movieHubTheme", theme);
+    });
+
+    // Save favorites
+    function saveFavorites() {
+        localStorage.setItem("movieHubFavorites", JSON.stringify(favorites));
+        updateStats();
+    }
+
+    function isFavorite(id) {
+        return favorites.includes(id);
+    }
+
+    function toggleFavorite(id) {
+        if (isFavorite(id)) {
+            favorites = favorites.filter(item => item !== id);
+        } else {
+            favorites.push(id);
+        }
+
+        saveFavorites();
+        renderMovies();
+        renderFavorites();
+
+        if (currentMovieId === id && modal.classList.contains("open")) {
+            updateModalFavoriteButton();
+        }
+    }
+
+    // Create a movie card
+    function createMovieCard(movie) {
+        const card = document.createElement("article");
+        card.className = "movie-card";
+
+        const genres = movie.genre
+            .map(genre => genreNames[genre] || genre)
+            .join(" / ");
+
+        card.innerHTML = `
+            <div class="poster" style="--poster-bg: ${movie.color}">
+                <span class="poster-year">${movie.year}</span>
+                <span class="rating">★ ${movie.rating.toFixed(1)}</span>
+                <span class="poster-title"></span>
+            </div>
+
+            <div class="movie-card-info">
+                <p class="movie-genre"></p>
+                <h3></h3>
+                <p class="movie-subtitle">${movie.year} · ${movie.duration}</p>
+
+                <div class="card-actions">
+                    <button class="details-btn" type="button" data-action="details">
+                        ดูรายละเอียด
+                    </button>
+                    <button
+                        class="favorite-btn ${isFavorite(movie.id) ? "is-favorite" : ""}"
+                        type="button"
+                        data-action="favorite"
+                        aria-label="เพิ่มหรือนำออกจากรายการโปรด"
+                        aria-pressed="${isFavorite(movie.id)}"
+                    >${isFavorite(movie.id) ? "♥" : "♡"}</button>
+                </div>
+            </div>
+        `;
+
+        card.querySelector(".poster-title").textContent = movie.poster;
+        card.querySelector(".movie-genre").textContent = genres;
+        card.querySelector("h3").textContent = movie.title;
+
+        card.querySelector('[data-action="details"]').addEventListener("click", () => {
+            openModal(movie.id);
+        });
+
+        card.querySelector('[data-action="favorite"]').addEventListener("click", () => {
+            toggleFavorite(movie.id);
+        });
+
+        return card;
+    }
+
+    // Search, filter and sort
+    function getFilteredMovies() {
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        let list = movies.filter(movie => {
+            const matchesGenre =
+                activeGenre === "all" || movie.genre.includes(activeGenre);
+
+            const searchableText = [
+                movie.title,
+                movie.description,
+                movie.director,
+                movie.year.toString(),
+                movie.genre.map(genre => genreNames[genre]).join(" ")
+            ].join(" ").toLowerCase();
+
+            const matchesSearch = searchableText.includes(keyword);
+            const matchesFavorite = !showFavoritesOnly || isFavorite(movie.id);
+
+            return matchesGenre && matchesSearch && matchesFavorite;
+        });
+
+        const sort = sortSelect.value;
+
+        if (sort === "az") {
+            list.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sort === "za") {
+            list.sort((a, b) => b.title.localeCompare(a.title));
+        } else if (sort === "rating") {
+            list.sort((a, b) => b.rating - a.rating);
+        } else if (sort === "year") {
+            list.sort((a, b) => b.year - a.year);
+        }
+
+        return list;
+    }
+
+    // Render main movie list
+    function renderMovies() {
+        const list = getFilteredMovies();
+
+        movieGrid.innerHTML = "";
+
+        list.forEach(movie => {
+            movieGrid.appendChild(createMovieCard(movie));
+        });
+
+        resultCount.textContent = `${list.length} เรื่อง`;
+        resultTitle.textContent = showFavoritesOnly
+            ? "ภาพยนตร์รายการโปรด"
+            : activeGenre === "all"
+                ? "ภาพยนตร์ทั้งหมด"
+                : genreNames[activeGenre] || "ภาพยนตร์";
+
+        emptyState.hidden = list.length !== 0;
+    }
+
+    // Render favorites section
+    function renderFavorites() {
+        const favoriteMovies = movies.filter(movie => isFavorite(movie.id));
+
+        favoriteGrid.innerHTML = "";
+
+        favoriteMovies.forEach(movie => {
+            favoriteGrid.appendChild(createMovieCard(movie));
+        });
+
+        favoriteEmpty.hidden = favoriteMovies.length !== 0;
+    }
+
+    // Statistics
+    function updateStats() {
+        document.getElementById("totalMovies").textContent = movies.length;
+
+        const uniqueGenres = new Set(movies.flatMap(movie => movie.genre));
+        document.getElementById("totalGenres").textContent = uniqueGenres.size;
+
+        document.getElementById("totalFavorites").textContent = favorites.length;
+    }
+
+    // Filter buttons
+    filterButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            filterButtons.forEach(item => item.classList.remove("active"));
+            button.classList.add("active");
+
+            activeGenre = button.dataset.genre;
+            showFavoritesOnly = false;
+
+            renderMovies();
+        });
+    });
+
+    // Search
+    searchInput.addEventListener("input", renderMovies);
+
+    clearSearch.addEventListener("click", () => {
+        searchInput.value = "";
+        renderMovies();
+        searchInput.focus();
+    });
+
+    // Sort
+    sortSelect.addEventListener("change", renderMovies);
+
+    // Reset filters
+    document.getElementById("resetFilters").addEventListener("click", () => {
+        activeGenre = "all";
+        showFavoritesOnly = false;
+        searchInput.value = "";
+        sortSelect.value = "default";
+
+        filterButtons.forEach(button => {
+            button.classList.toggle("active", button.dataset.genre === "all");
+        });
+
+        renderMovies();
+    });
+
+    // Show all movies
+    document.getElementById("showAllMovies").addEventListener("click", () => {
+        activeGenre = "all";
+        showFavoritesOnly = false;
+        searchInput.value = "";
+        sortSelect.value = "default";
+
+        filterButtons.forEach(button => {
+            button.classList.toggle("active", button.dataset.genre === "all");
+        });
+
+        renderMovies();
+        document.getElementById("movies").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Open movie detail
+    function openModal(id) {
+        const movie = movies.find(item => item.id === id);
+        if (!movie) return;
+
+        currentMovieId = id;
+
+        document.getElementById("modalTitle").textContent = movie.title;
+        document.getElementById("modalYear").textContent = movie.year;
+        document.getElementById("modalRating").textContent = `★ ${movie.rating.toFixed(1)}`;
+        document.getElementById("modalDuration").textContent = movie.duration;
+        document.getElementById("modalDescription").textContent = movie.description;
+        document.getElementById("modalDirector").textContent = movie.director;
+
+        document.getElementById("modalGenres").textContent =
+            movie.genre.map(genre => genreNames[genre] || genre).join(", ");
+
+        document.getElementById("modalGenre").textContent =
+            movie.genre.map(genre => genreNames[genre] || genre).join(" / ");
+
+        const modalPoster = document.getElementById("modalPoster");
+        modalPoster.style.background = movie.color;
+        document.getElementById("modalPosterText").textContent = movie.poster;
+
+        updateModalFavoriteButton();
+
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        closeModalBtn.focus();
+    }
+
+    // Modal favorite button
+    function updateModalFavoriteButton() {
+        if (currentMovieId === null) return;
+
+        modalFavoriteBtn.textContent = isFavorite(currentMovieId)
+            ? "♥ นำออกจากรายการโปรด"
+            : "♡ เพิ่มรายการโปรด";
+    }
+
+    modalFavoriteBtn.addEventListener("click", () => {
+        if (currentMovieId !== null) {
+            toggleFavorite(currentMovieId);
+        }
+    });
+
+    // Close modal
+    function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        currentMovieId = null;
+    }
+
+    closeModalBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+        if (event.target.hasAttribute("data-close-modal")) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && modal.classList.contains("open")) {
+            closeModal();
+        }
+    });
+
+    // Initial render
+    updateStats();
+    renderMovies();
+    renderFavorites();
+
+});
