@@ -1,6 +1,10 @@
 
 "use strict";
 
+/* =====================================
+   MOVIE HUB - MOVIE DATABASE
+===================================== */
+
 const movies = [
     ["The Shawshank Redemption",1994,"drama",9.3],
     ["The Godfather",1972,"drama",9.2],
@@ -104,6 +108,10 @@ const movies = [
     ["The Terminator",1984,"sci-fi",8.1]
 ];
 
+/* =====================================
+   GENRES
+===================================== */
+
 const genreNames = {
     action: "แอ็กชัน",
     comedy: "ตลก",
@@ -115,256 +123,474 @@ const genreNames = {
     fantasy: "แฟนตาซี"
 };
 
-const $ = id => document.getElementById(id);
+const genreDescriptions = {
+    action: "ภาพยนตร์แนวแอ็กชัน เน้นการผจญภัยและเหตุการณ์ที่ตื่นเต้น",
+    comedy: "ภาพยนตร์แนวตลก เน้นความสนุกสนานและเสียงหัวเราะ",
+    romance: "ภาพยนตร์แนวโรแมนติกเกี่ยวกับความรักและความสัมพันธ์",
+    horror: "ภาพยนตร์แนวสยองขวัญและระทึกขวัญ",
+    animation: "ภาพยนตร์แอนิเมชันที่เล่าเรื่องผ่านงานภาพและตัวละคร",
+    "sci-fi": "ภาพยนตร์แนววิทยาศาสตร์และจินตนาการ",
+    drama: "ภาพยนตร์แนวดราม่าที่เน้นเรื่องราวและอารมณ์",
+    fantasy: "ภาพยนตร์แนวแฟนตาซีที่เต็มไปด้วยจินตนาการ"
+};
 
-const movieGrid = $("movieGrid");
-const favoriteGrid = $("favoriteGrid");
-const searchInput = $("searchInput");
-const genreFilter = $("genreFilter");
-const sortFilter = $("sortFilter");
-const resultCount = $("resultCount");
-const favoriteCount = $("favoriteCount");
-const totalMovies = $("totalMovies");
-const modal = $("movieModal");
-const modalBody = $("modalBody");
-const themeBtn = $("themeBtn");
+/* =====================================
+   START WEBSITE
+===================================== */
 
-let currentGenre = "all";
-let favorites = [];
+document.addEventListener("DOMContentLoaded", function () {
 
-try {
-    const saved = JSON.parse(localStorage.getItem("movieHubFavorites") || "[]");
-    favorites = Array.isArray(saved) ? saved : [];
-} catch {
-    favorites = [];
-}
+    const $ = id => document.getElementById(id);
 
-const movieData = movies.map((movie, index) => ({
-    id: index + 1,
-    title: movie[0],
-    year: movie[1],
-    genre: movie[2],
-    rating: movie[3]
-}));
+    const movieGrid = $("movieGrid");
+    const favoriteGrid = $("favoriteGrid");
+    const searchInput = $("searchInput");
+    const genreFilter = $("genreFilter");
+    const sortFilter = $("sortFilter");
+    const resultCount = $("resultCount");
+    const favoriteCount = $("favoriteCount");
+    const totalMovies = $("totalMovies");
+    const modal = $("movieModal");
+    const modalBody = $("modalBody");
+    const closeModalButton = $("closeModal");
+    const themeBtn = $("themeBtn");
 
-function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[char]);
-}
-
-function createGenreOptions() {
-    Object.entries(genreNames).forEach(([key, name]) => {
-        const option = document.createElement("option");
-        option.value = key;
-        option.textContent = name;
-        genreFilter.appendChild(option);
-    });
-}
-
-function createMovieCard(movie) {
-    const isFavorite = favorites.includes(movie.id);
-
-    return `
-        <article class="movie-card">
-            <div class="poster-fallback">
-                <span>${escapeHTML(movie.title)}</span>
-            </div>
-            <div class="movie-info">
-                <h3 class="movie-title">${escapeHTML(movie.title)}</h3>
-                <div class="movie-meta">
-                    <span>${movie.year}</span>
-                    <span class="rating">★ ${movie.rating.toFixed(1)}</span>
-                </div>
-                <div class="card-actions">
-                    <button class="detail-btn" data-detail="${movie.id}">
-                        ดูรายละเอียด
-                    </button>
-                    <button class="favorite-btn ${isFavorite ? "active" : ""}"
-                        data-favorite="${movie.id}">
-                        ${isFavorite ? "♥" : "♡"}
-                    </button>
-                </div>
-            </div>
-        </article>
-    `;
-}
-
-function renderFavorites() {
-    const favoriteMovies = movieData.filter(movie =>
-        favorites.includes(movie.id)
-    );
-
-    favoriteCount.textContent = favoriteMovies.length;
-
-    favoriteGrid.innerHTML = favoriteMovies.length
-        ? favoriteMovies.map(createMovieCard).join("")
-        : `<p class="empty-message">ยังไม่มีภาพยนตร์ในรายการโปรด</p>`;
-}
-
-function renderMovies() {
-    if (!movieGrid) return;
-
-    let filtered = [...movieData];
-    const keyword = searchInput.value.trim().toLowerCase();
-
-    if (keyword) {
-        filtered = filtered.filter(movie =>
-            movie.title.toLowerCase().includes(keyword)
-        );
+    // ตรวจสอบพื้นที่แสดงหนัง
+    if (!movieGrid) {
+        console.error("ไม่พบ element ที่มี id='movieGrid'");
+        return;
     }
 
-    if (currentGenre !== "all") {
-        filtered = filtered.filter(movie =>
-            movie.genre === currentGenre
-        );
-    }
+    // สร้างข้อมูลหนัง
+    const movieData = movies.map((movie, index) => ({
+        id: index + 1,
+        title: movie[0],
+        year: movie[1],
+        genre: movie[2],
+        rating: movie[3]
+    }));
 
-    if (sortFilter.value === "popular") {
-        filtered.sort((a, b) => b.rating - a.rating);
-    } else if (sortFilter.value === "title") {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortFilter.value === "year") {
-        filtered.sort((a, b) => b.year - a.year);
-    }
+    let currentGenre = "all";
+    let favorites = [];
 
-    movieGrid.innerHTML = filtered.length
-        ? filtered.map(createMovieCard).join("")
-        : `<p class="empty-message">ไม่พบภาพยนตร์ที่ค้นหา</p>`;
-
-    resultCount.textContent = `แสดงภาพยนตร์ ${filtered.length} เรื่อง`;
-    totalMovies.textContent = movieData.length;
-
-    renderFavorites();
-}
-
-function toggleFavorite(id) {
-    if (favorites.includes(id)) {
-        favorites = favorites.filter(item => item !== id);
-    } else {
-        favorites.push(id);
-    }
-
+    // โหลดรายการโปรด
     try {
-        localStorage.setItem("movieHubFavorites", JSON.stringify(favorites));
+        const saved = JSON.parse(
+            localStorage.getItem("movieHubFavorites") || "[]"
+        );
+
+        favorites = Array.isArray(saved) ? saved : [];
     } catch (error) {
-        console.warn("ไม่สามารถบันทึกรายการโปรดได้", error);
+        favorites = [];
     }
 
-    renderMovies();
-}
-
-function showDetails(id) {
-    const movie = movieData.find(item => item.id === id);
-    if (!movie) return;
-
-    modalBody.innerHTML = `
-        <div class="modal-layout">
-            <div class="poster-fallback modal-poster">
-                ${escapeHTML(movie.title)}
-            </div>
-            <div class="modal-info">
-                <p class="section-label">MOVIE DETAILS</p>
-                <h2>${escapeHTML(movie.title)}</h2>
-                <div class="modal-rating">★ ${movie.rating.toFixed(1)} / 10</div>
-                <p><strong>ปีที่ฉาย:</strong> ${movie.year}</p>
-                <p><strong>ประเภท:</strong> ${genreNames[movie.genre]}</p>
-                <p><strong>ข้อมูล:</strong> ${genreNames[movie.genre]} เป็นภาพยนตร์ที่นำเสนอเรื่องราวตามแนวทางของประเภทนี้</p>
-            </div>
-        </div>
-    `;
-
-    modal.classList.add("show");
-}
-
-function closeModal() {
-    modal.classList.remove("show");
-}
-
-// ใช้ Event Delegation สำหรับปุ่มในการ์ด
-document.addEventListener("click", event => {
-    const detailButton = event.target.closest("[data-detail]");
-    const favoriteButton = event.target.closest("[data-favorite]");
-
-    if (detailButton) {
-        showDetails(Number(detailButton.dataset.detail));
+    // ป้องกัน HTML แปลกปลอม
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
     }
 
-    if (favoriteButton) {
-        toggleFavorite(Number(favoriteButton.dataset.favorite));
+    /* =====================================
+       CREATE GENRE OPTIONS
+    ===================================== */
+
+    function createGenreOptions() {
+        if (!genreFilter) return;
+
+        Object.entries(genreNames).forEach(([key, name]) => {
+            const option = document.createElement("option");
+            option.value = key;
+            option.textContent = name;
+            genreFilter.appendChild(option);
+        });
     }
-});
 
-$("closeModal").addEventListener("click", closeModal);
+    /* =====================================
+       MOVIE CARD
+    ===================================== */
 
-modal.addEventListener("click", event => {
-    if (event.target === modal) closeModal();
-});
+    function createMovieCard(movie) {
+        const isFavorite = favorites.includes(movie.id);
 
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeModal();
-});
+        return `
+            <article class="movie-card">
 
-document.querySelectorAll(".filter-btn").forEach(button => {
-    button.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn")
-            .forEach(btn => btn.classList.remove("active"));
+                <div class="poster-fallback">
+                    <span>${escapeHTML(movie.title)}</span>
+                </div>
 
-        button.classList.add("active");
-        currentGenre = button.dataset.filter;
-        genreFilter.value = currentGenre;
+                <div class="movie-info">
+
+                    <h3 class="movie-title">
+                        ${escapeHTML(movie.title)}
+                    </h3>
+
+                    <div class="movie-meta">
+                        <span>${movie.year}</span>
+                        <span class="rating">
+                            ★ ${movie.rating.toFixed(1)}
+                        </span>
+                    </div>
+
+                    <div class="card-actions">
+
+                        <button
+                            class="detail-btn"
+                            data-detail="${movie.id}">
+                            ดูรายละเอียด
+                        </button>
+
+                        <button
+                            class="favorite-btn ${isFavorite ? "active" : ""}"
+                            data-favorite="${movie.id}">
+                            ${isFavorite ? "♥" : "♡"}
+                        </button>
+
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+
+    /* =====================================
+       FAVORITES
+    ===================================== */
+
+    function renderFavorites() {
+        if (!favoriteGrid) return;
+
+        const favoriteMovies = movieData.filter(movie =>
+            favorites.includes(movie.id)
+        );
+
+        if (favoriteCount) {
+            favoriteCount.textContent = favoriteMovies.length;
+        }
+
+        favoriteGrid.innerHTML = favoriteMovies.length
+            ? favoriteMovies.map(createMovieCard).join("")
+            : `<p class="empty-message">
+                ยังไม่มีภาพยนตร์ในรายการโปรด
+               </p>`;
+    }
+
+    function toggleFavorite(id) {
+        if (favorites.includes(id)) {
+            favorites = favorites.filter(item => item !== id);
+        } else {
+            favorites.push(id);
+        }
+
+        try {
+            localStorage.setItem(
+                "movieHubFavorites",
+                JSON.stringify(favorites)
+            );
+        } catch (error) {
+            console.warn("ไม่สามารถบันทึกรายการโปรดได้", error);
+        }
+
         renderMovies();
+    }
+
+    /* =====================================
+       RENDER MOVIES
+    ===================================== */
+
+    function renderMovies() {
+        let filtered = [...movieData];
+
+        const keyword = searchInput
+            ? searchInput.value.trim().toLowerCase()
+            : "";
+
+        // ค้นหาหนัง
+        if (keyword) {
+            filtered = filtered.filter(movie =>
+                movie.title.toLowerCase().includes(keyword)
+            );
+        }
+
+        // กรองประเภท
+        if (currentGenre !== "all") {
+            filtered = filtered.filter(movie =>
+                movie.genre === currentGenre
+            );
+        }
+
+        // เรียงลำดับ
+        const sortValue = sortFilter
+            ? sortFilter.value
+            : "popular";
+
+        if (sortValue === "popular") {
+            filtered.sort((a, b) => b.rating - a.rating);
+        }
+
+        if (sortValue === "title") {
+            filtered.sort((a, b) =>
+                a.title.localeCompare(b.title)
+            );
+        }
+
+        if (sortValue === "year") {
+            filtered.sort((a, b) => b.year - a.year);
+        }
+
+        // แสดงหนัง
+        movieGrid.innerHTML = filtered.length
+            ? filtered.map(createMovieCard).join("")
+            : `<p class="empty-message">
+                ไม่พบภาพยนตร์ที่ค้นหา
+               </p>`;
+
+        if (resultCount) {
+            resultCount.textContent =
+                `แสดงภาพยนตร์ ${filtered.length} เรื่อง`;
+        }
+
+        if (totalMovies) {
+            totalMovies.textContent = movieData.length;
+        }
+
+        renderFavorites();
+    }
+
+    /* =====================================
+       MOVIE DETAILS
+    ===================================== */
+
+    function showDetails(id) {
+        const movie = movieData.find(item => item.id === id);
+
+        if (!movie || !modal || !modalBody) return;
+
+        modalBody.innerHTML = `
+            <div class="modal-layout">
+
+                <div class="poster-fallback modal-poster">
+                    ${escapeHTML(movie.title)}
+                </div>
+
+                <div class="modal-info">
+
+                    <p class="section-label">
+                        MOVIE DETAILS
+                    </p>
+
+                    <h2>${escapeHTML(movie.title)}</h2>
+
+                    <div class="modal-rating">
+                        ★ ${movie.rating.toFixed(1)} / 10
+                    </div>
+
+                    <p>
+                        <strong>ปีที่ฉาย:</strong>
+                        ${movie.year}
+                    </p>
+
+                    <p>
+                        <strong>ประเภท:</strong>
+                        ${genreNames[movie.genre]}
+                    </p>
+
+                    <p>
+                        <strong>ข้อมูลประเภทหนัง:</strong><br>
+                        ${genreDescriptions[movie.genre]}
+                    </p>
+
+                    <p>
+                        คะแนนและข้อมูลเบื้องต้นใช้เพื่อประกอบการศึกษา
+                    </p>
+
+                </div>
+            </div>
+        `;
+
+        modal.classList.add("show");
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.classList.remove("show");
+        }
+    }
+
+    /* =====================================
+       BUTTON EVENTS
+    ===================================== */
+
+    document.addEventListener("click", function (event) {
+
+        const detailButton = event.target.closest("[data-detail]");
+        const favoriteButton = event.target.closest("[data-favorite]");
+
+        if (detailButton) {
+            showDetails(Number(detailButton.dataset.detail));
+        }
+
+        if (favoriteButton) {
+            toggleFavorite(Number(favoriteButton.dataset.favorite));
+        }
     });
-});
 
-searchInput.addEventListener("input", renderMovies);
+    if (closeModalButton) {
+        closeModalButton.addEventListener("click", closeModal);
+    }
 
-genreFilter.addEventListener("change", () => {
-    currentGenre = genreFilter.value;
+    if (modal) {
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    });
+
+    /* =====================================
+       FILTER BUTTONS
+    ===================================== */
 
     document.querySelectorAll(".filter-btn").forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.filter === currentGenre
-        );
+
+        button.addEventListener("click", function () {
+
+            document.querySelectorAll(".filter-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            currentGenre = button.dataset.filter || "all";
+
+            // แก้ Error: ตรวจสอบก่อนกำหนดค่า
+            if (genreFilter) {
+                genreFilter.value = currentGenre;
+            }
+
+            renderMovies();
+        });
+
     });
 
-    renderMovies();
-});
+    /* =====================================
+       SEARCH
+    ===================================== */
 
-sortFilter.addEventListener("change", renderMovies);
+    if (searchInput) {
+        searchInput.addEventListener("input", renderMovies);
+    }
 
-function applyTheme(theme) {
-    document.body.classList.toggle("light-theme", theme === "light");
-    themeBtn.textContent = theme === "light" ? "ธีมมืด" : "ธีมสว่าง";
-}
+    /* =====================================
+       GENRE SELECT
+    ===================================== */
 
-let savedTheme = localStorage.getItem("movieHubTheme") || "dark";
-applyTheme(savedTheme);
+    if (genreFilter) {
 
-themeBtn.addEventListener("click", () => {
-    savedTheme = savedTheme === "dark" ? "light" : "dark";
+        genreFilter.addEventListener("change", function () {
+
+            currentGenre = genreFilter.value;
+
+            document.querySelectorAll(".filter-btn")
+                .forEach(button => {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.filter === currentGenre
+                    );
+
+                });
+
+            renderMovies();
+        });
+
+    }
+
+    /* =====================================
+       SORT
+    ===================================== */
+
+    if (sortFilter) {
+        sortFilter.addEventListener("change", renderMovies);
+    }
+
+    /* =====================================
+       THEME
+    ===================================== */
+
+    function applyTheme(theme) {
+
+        document.body.classList.toggle(
+            "light-theme",
+            theme === "light"
+        );
+
+        if (themeBtn) {
+            themeBtn.textContent =
+                theme === "light" ? "ธีมมืด" : "ธีมสว่าง";
+        }
+    }
+
+    let savedTheme = "dark";
 
     try {
-        localStorage.setItem("movieHubTheme", savedTheme);
+        savedTheme =
+            localStorage.getItem("movieHubTheme") || "dark";
     } catch (error) {
-        console.warn("ไม่สามารถบันทึกธีมได้", error);
+        savedTheme = "dark";
     }
 
     applyTheme(savedTheme);
-});
 
-// เริ่มแสดงข้อมูล
-try {
-    createGenreOptions();
-    renderMovies();
-    console.log("MOVIE HUB พร้อมใช้งาน:", movieData.length, "เรื่อง");
-} catch (error) {
-    console.error("เกิดข้อผิดพลาดในการแสดงภาพยนตร์:", error);
-    movieGrid.innerHTML =
-        '<p class="empty-message">เกิดข้อผิดพลาด กรุณาตรวจสอบไฟล์ script.js</p>';
-}
+    if (themeBtn) {
+        themeBtn.addEventListener("click", function () {
+
+            savedTheme =
+                savedTheme === "dark" ? "light" : "dark";
+
+            try {
+                localStorage.setItem("movieHubTheme", savedTheme);
+            } catch (error) {
+                console.warn("ไม่สามารถบันทึกธีมได้", error);
+            }
+
+            applyTheme(savedTheme);
+        });
+    }
+
+    /* =====================================
+       START
+    ===================================== */
+
+    try {
+        createGenreOptions();
+        renderMovies();
+
+        console.log(
+            "MOVIE HUB พร้อมใช้งาน:",
+            movieData.length,
+            "เรื่อง"
+        );
+
+    } catch (error) {
+
+        console.error("MOVIE HUB ERROR:", error);
+
+        movieGrid.innerHTML = `
+            <p class="empty-message">
+                เกิดข้อผิดพลาดในการแสดงภาพยนตร์
+                กรุณาตรวจสอบ Console
+            </p>
+        `;
+    }
+
+});
